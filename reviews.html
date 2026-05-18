@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SA Reviews | Scissors Associate</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Outfit:wght@200;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: { sa: { black: '#0a0a0a', dark: '#141414', graphite: '#1f1f1f', silver: '#e0e0e0', gold: '#d4af37' } }, fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Outfit', 'sans-serif'] } } } }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+</head>
+<body class="bg-sa-black text-sa-silver font-sans overflow-x-hidden antialiased opacity-0 transition-opacity duration-1000" id="body">
+    
+    <nav class="fixed top-0 w-full z-50 px-8 py-6 mix-blend-difference flex justify-between items-center transition-all duration-500 bg-sa-black/20 backdrop-blur-md" id="navbar">
+        <a href="index.html" class="text-3xl font-display font-bold tracking-widest uppercase cursor-pointer">SA<span class="text-sa-gold">.</span></a>
+        <a href="index.html" class="uppercase text-xs tracking-widest border border-sa-silver/30 px-6 py-2 hover:bg-sa-silver hover:text-sa-black transition-all">Go Back</a>
+    </nav>
+
+    <main class="min-h-screen pt-32 pb-24 px-8 relative flex flex-col items-center">
+        <div class="text-center mb-16 relative z-10 w-full max-w-4xl">
+            <h1 class="text-xs uppercase tracking-[0.4em] text-sa-gold mb-6 font-mono">Clientele</h1>
+            <h2 class="text-5xl font-display font-light uppercase tracking-widest mb-4">Unmatched Status</h2>
+            <!-- Rating Bar -->
+            <div class="flex flex-col items-center justify-center mt-8 space-y-2">
+                <div class="text-4xl font-display font-bold text-sa-silver">4.9<span class="text-lg text-sa-silver/50">/5</span></div>
+                <div class="flex text-sa-gold space-x-1">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c...z"></path></svg>
+                    <!-- simplified star svg representation for brevity, usually I'd put full path -->
+                    <span>★★★★★</span>
+                </div>
+                <div class="text-xs tracking-widest uppercase text-sa-silver/40 font-mono">From 5000+ Global Owners</div>
+            </div>
+        </div>
+
+        <!-- Horizontal depth carousel -->
+        <div class="relative w-full max-w-7xl mx-auto overflow-hidden px-4 md:px-12 pb-12">
+            <div class="flex flex-col md:flex-row gap-8 justify-center items-stretch" id="reviews-container">
+                <!-- Replace with detailed cards -->
+                <div class="bg-sa-dark p-10 border border-sa-silver/5 rounded-xl shadow-2xl flex-1 transform transition-all duration-500 hover:-translate-y-4 hover:border-sa-gold/30 hover:shadow-[0_20px_40px_rgba(212,175,55,0.05)] review-card opacity-0 translate-y-10">
+                    <p class="text-sa-silver/80 font-light italic leading-relaxed mb-8">"Purchasing the Zenith was not just acquiring a car; it was gaining entry to a new echelon of engineering. The meticulous attention to detail is mind-bending."</p>
+                    <div class="border-t border-sa-silver/10 pt-4 flex flex-col">
+                        <span class="text-sm font-medium tracking-wide">Alexander H.</span>
+                        <span class="text-xs font-mono text-sa-silver/40">Zurich, Switzerland</span>
+                    </div>
+                </div>
+                <div class="bg-gradient-to-b from-sa-graphite to-sa-dark p-10 border border-sa-gold/20 rounded-xl shadow-2xl flex-1 transform scale-105 transition-all duration-500 hover:-translate-y-4 hover:border-sa-gold/50 shadow-[0_10px_30px_rgba(212,175,55,0.1)] review-card opacity-0 translate-y-10">
+                    <p class="text-sa-silver font-light italic leading-relaxed mb-8">"Their configurator experience in London was unparalleled. They matched the leather exactly to my specifications. The car drives like it's connected to my nervous system."</p>
+                    <div class="border-t border-sa-gold/20 pt-4 flex flex-col">
+                        <span class="text-sm font-medium tracking-wide text-sa-gold">Sophia V.</span>
+                        <span class="text-xs font-mono text-sa-silver/40">Monaco</span>
+                    </div>
+                </div>
+                <div class="bg-sa-dark p-10 border border-sa-silver/5 rounded-xl shadow-2xl flex-1 transform transition-all duration-500 hover:-translate-y-4 hover:border-sa-gold/30 hover:shadow-[0_20px_40px_rgba(212,175,55,0.05)] review-card opacity-0 translate-y-10">
+                    <p class="text-sa-silver/80 font-light italic leading-relaxed mb-8">"Every time I press the ignition on the Phantom, it feels like an event. I own several hypercars, but the SA stands completely unchallenged on the track."</p>
+                    <div class="border-t border-sa-silver/10 pt-4 flex flex-col">
+                        <span class="text-sm font-medium tracking-wide">Daniel K.</span>
+                        <span class="text-xs font-mono text-sa-silver/40">Dubai, UAE</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <a href="configure.html" class="mt-12 bg-transparent border border-sa-silver px-12 py-4 uppercase text-sm tracking-widest hover:bg-sa-silver hover:text-sa-black transition-all">Join The Legacy</a>
+    </main>
+
+    <script src="transition.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            gsap.to('.review-card', { opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: "power3.out", delay: 0.3 });
+        });
+    </script>
+</body>
+</html>

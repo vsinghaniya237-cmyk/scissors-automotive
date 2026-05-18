@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About SA | Scissors Associate</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Outfit:wght@200;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: { sa: { black: '#0a0a0a', dark: '#141414', graphite: '#1f1f1f', silver: '#e0e0e0', gold: '#d4af37' } }, fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Outfit', 'sans-serif'] } } } }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+</head>
+<body class="bg-sa-black text-sa-silver font-sans overflow-x-hidden antialiased opacity-0 transition-opacity duration-1000" id="body">
+    
+    <nav class="fixed top-0 w-full z-50 px-8 py-6 mix-blend-difference flex justify-between items-center transition-all duration-500 bg-sa-black/20 backdrop-blur-md border-b border-sa-silver/10" id="navbar">
+        <a href="index.html" class="text-3xl font-display font-bold tracking-widest uppercase cursor-pointer">SA<span class="text-sa-gold">.</span></a>
+        <ul class="hidden md:flex space-x-12 font-medium tracking-widest text-sm uppercase">
+            <li><a href="about.html" class="text-sa-gold transition-colors duration-300">About</a></li>
+            <li><a href="collection.html" class="hover:text-sa-gold transition-colors duration-300">Collection</a></li>
+            <li><a href="technology.html" class="hover:text-sa-gold transition-colors duration-300">Technology</a></li>
+            <li><a href="experience.html" class="hover:text-sa-gold transition-colors duration-300">Experience</a></li>
+        </ul>
+        <a href="configure.html" class="bg-sa-silver text-sa-black px-6 py-2 uppercase text-xs tracking-widest hover:bg-sa-gold transition-all duration-300 font-bold">Configurator</a>
+    </nav>
+
+    <!-- Header -->
+    <header class="relative pt-48 pb-32 px-8 overflow-hidden">
+        <div class="max-w-7xl mx-auto flex flex-col items-center text-center relative z-10">
+            <h1 class="text-xs uppercase tracking-[0.4em] text-sa-gold mb-6 reveal-init font-mono">The Legacy</h1>
+            <h2 class="text-5xl md:text-8xl font-display font-light uppercase tracking-widest mb-12 reveal-init">Born in <br/><span class="text-sa-silver/80">Innovation.</span></h2>
+        </div>
+    </header>
+
+    <!-- Map & Story -->
+    <section class="py-24 px-8 bg-sa-dark border-y border-sa-silver/5 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div class="space-y-8 map-text">
+                <h3 class="text-4xl font-display uppercase tracking-widest leading-tight">London <br><span class="text-sa-gold tracking-[0.2em]">Headquarters</span></h3>
+                <p class="text-sa-silver/60 font-light leading-relaxed text-lg">Since 1985, Scissors Associate has engineered the world’s most advanced luxury vehicles from the heart of the United Kingdom. Our facility runs exclusively on sustainable energy, pushing the limits of physics while maintaining hand-crafted elegance.</p>
+                <div class="pt-8 border-t border-sa-silver/10">
+                    <p class="text-xs tracking-widest uppercase font-mono text-sa-gold mb-2">Guided Principle</p>
+                    <p class="text-xl italic font-serif">"Precision in motion is not merely an achievement, it is a persistent obsession."</p>
+                </div>
+            </div>
+            
+            <div class="relative h-[500px] w-full rounded-2xl overflow-hidden border border-sa-silver/10 bg-sa-black map-viewer group">
+                <img src="assets/hq-london.jpg" alt="London Map UI" class="w-full h-full object-cover opacity-60 mix-blend-screen scale-110 group-hover:scale-100 transition-transform duration-1000">
+                <div class="absolute inset-0 bg-sa-gold/5 blur-sm mix-blend-overlay"></div>
+                <!-- Glowing pin -->
+                <div class="absolute top-1/2 left-1/2 w-4 h-4 bg-sa-gold rounded-full shadow-[0_0_20px_#d4af37] animate-pulse"></div>
+                <div class="absolute top-1/2 left-1/2 w-12 h-12 border border-sa-gold rounded-full -translate-x-1/2 -translate-y-1/2 animate-ping opacity-20"></div>
+                
+                <div class="absolute bottom-6 left-6 text-xs font-mono bg-sa-black/80 px-4 py-2 border border-sa-gold/30">Coordinates: 51.5074° N, 0.1278° W</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Horizontal Timeline -->
+    <section class="py-32 px-8 overflow-hidden bg-sa-black">
+        <h2 class="text-center text-3xl font-display uppercase tracking-widest mb-24 reveal-timeline">Our Evolution</h2>
+        <div class="max-w-7xl mx-auto relative">
+            <!-- Line -->
+            <div class="absolute top-1/2 left-0 w-full h-[1px] bg-sa-silver/20 -translate-y-1/2 z-0 hidden md:block line-draw"></div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 relative z-10 timeline-nodes">
+                
+                <div class="text-center group pt-12 md:pt-0">
+                    <div class="w-4 h-4 bg-sa-black border-2 border-sa-silver rounded-full mx-auto md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 group-hover:bg-sa-gold transition-colors z-10 hidden md:block"></div>
+                    <div class="md:mb-16">
+                        <h4 class="text-sa-gold font-mono tracking-widest mb-2">1985</h4>
+                        <p class="text-sm text-sa-silver/60">Foundation built on unmatched precision engineering.</p>
+                    </div>
+                </div>
+
+                <div class="text-center group pt-12 md:pt-0">
+                    <div class="w-4 h-4 bg-sa-black border-2 border-sa-silver rounded-full mx-auto md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 group-hover:bg-sa-gold transition-colors z-10 hidden md:block"></div>
+                    <div class="md:mt-16">
+                        <h4 class="text-sa-gold font-mono tracking-widest mb-2">1999</h4>
+                        <p class="text-sm text-sa-silver/60">Introduction of the first carbon-monocoque chassis.</p>
+                    </div>
+                </div>
+
+                <div class="text-center group pt-12 md:pt-0">
+                    <div class="w-4 h-4 bg-sa-black border-2 border-sa-silver rounded-full mx-auto md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 group-hover:bg-sa-gold transition-colors z-10 hidden md:block"></div>
+                    <div class="md:mb-16">
+                        <h4 class="text-sa-gold font-mono tracking-widest mb-2">2012</h4>
+                        <p class="text-sm text-sa-silver/60">The hybrid hypercar revolution defines a new era.</p>
+                    </div>
+                </div>
+
+                <div class="text-center group pt-12 md:pt-0">
+                    <div class="w-4 h-4 bg-sa-black border-2 border-sa-silver rounded-full mx-auto md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 group-hover:bg-sa-gold transition-colors z-10 hidden md:block text-sa-gold"></div>
+                    <div class="md:mt-16">
+                        <h4 class="text-sa-gold font-mono tracking-widest mb-2">Present</h4>
+                        <p class="text-sm text-sa-silver/60">AI aerodynamics and uncompromised luxury.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-sa-black py-16 border-t border-sa-silver/10 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center relative z-10">
+            <div class="text-2xl font-display font-bold tracking-widest uppercase mb-8 md:mb-0">SA<span class="text-sa-gold">.</span></div>
+            <p class="text-xs text-sa-silver/40 font-mono">© 2026 Scissors Associate.</p>
+        </div>
+    </footer>
+
+    <script src="transition.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            gsap.to('.reveal-init', { opacity: 1, y: 0, duration: 1.5, stagger: 0.2, ease: "power3.out" });
+
+            gsap.from('.map-text', {
+                scrollTrigger: { trigger: '.map-text', start: "top 80%" },
+                opacity: 0, x: -50, duration: 1.2, ease: "power2.out"
+            });
+            gsap.from('.map-viewer', {
+                scrollTrigger: { trigger: '.map-viewer', start: "top 80%" },
+                opacity: 0, scale: 0.9, duration: 1.2, ease: "power2.out"
+            });
+
+            gsap.from('.timeline-nodes > div', {
+                scrollTrigger: { trigger: '.timeline-nodes', start: "top 75%" },
+                opacity: 0, y: 30, duration: 0.8, stagger: 0.2, ease: "power2.out"
+            });
+            gsap.fromTo('.line-draw', { scaleX: 0, transformOrigin: 'left' }, {
+                scrollTrigger: { trigger: '.timeline-nodes', start: "top 75%" },
+                scaleX: 1, duration: 1.5, ease: "power3.out"
+            });
+        });
+    </script>
+</body>
+</html>

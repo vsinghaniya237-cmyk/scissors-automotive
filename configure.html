@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configure SA | Scissors Associate</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Outfit:wght@200;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: { sa: { black: '#0a0a0a', dark: '#141414', graphite: '#1f1f1f', silver: '#e0e0e0', gold: '#d4af37' } }, fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Outfit', 'sans-serif'] } } } }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <!-- Three.js via CDN directly -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body class="bg-sa-black text-sa-silver font-sans overflow-hidden antialiased opacity-0 transition-opacity duration-1000" id="body">
+    
+    <nav class="fixed top-0 w-full z-50 px-8 py-6 mix-blend-difference flex justify-between items-center transition-all duration-500" id="navbar">
+        <a href="index.html" class="text-3xl font-display font-bold tracking-widest uppercase cursor-pointer">SA<span class="text-sa-gold">.</span></a>
+        <a href="index.html" class="uppercase text-xs tracking-widest border border-sa-silver/30 px-6 py-2 hover:bg-sa-silver hover:text-sa-black transition-all">Cancel</a>
+    </nav>
+
+    <!-- 3D Canvas -->
+    <div id="cfg-canvas" class="absolute inset-0 z-0"></div>
+
+    <!-- UI Overlay Configurator -->
+    <div class="absolute right-0 top-0 bottom-0 w-full md:w-[450px] bg-sa-black/60 backdrop-blur-xl border-l border-sa-silver/10 z-10 flex flex-col transform translate-x-full opacity-0" id="config-panel">
+        <div class="p-8 pt-24 pb-6 border-b border-sa-silver/10 flex-shrink-0">
+            <h2 class="text-3xl font-display uppercase tracking-widest mb-1">Commission</h2>
+            <p class="text-sa-silver/50 text-xs tracking-widest uppercase font-mono">Build Your Masterpiece</p>
+        </div>
+
+        <div class="flex-grow overflow-y-auto p-8 space-y-12 config-scroll">
+            
+            <!-- Exact Color -->
+            <div>
+                <h3 class="text-xs uppercase tracking-widest text-sa-gold mb-6 font-mono">1. Paint Finish</h3>
+                <div class="grid grid-cols-4 gap-4">
+                    <button class="color-btn w-full aspect-square rounded-full bg-[#111111] border-2 border-sa-gold transition-all" data-color="0x111111" data-price="0" title="Obsidian Black"></button>
+                    <button class="color-btn w-full aspect-square rounded-full bg-[#e0e0e0] border-2 border-transparent hover:border-sa-silver transition-all" data-color="0xe0e0e0" data-price="12000" title="Titanium Silver"></button>
+                    <button class="color-btn w-full aspect-square rounded-full bg-[#d4af37] border-2 border-transparent hover:border-sa-silver transition-all" data-color="0xd4af37" data-price="25000" title="Auric Gold"></button>
+                    <button class="color-btn w-full aspect-square rounded-full bg-[#4a0404] border-2 border-transparent hover:border-sa-silver transition-all" data-color="0x4a0404" data-price="18000" title="Blood Crystal"></button>
+                </div>
+            </div>
+
+            <!-- Wheels -->
+            <div>
+                <h3 class="text-xs uppercase tracking-widest text-sa-gold mb-6 font-mono">2. Forged Wheels</h3>
+                <div class="space-y-4">
+                    <button class="wheel-btn w-full text-left p-4 border border-sa-gold bg-sa-silver/5 hover:bg-sa-silver/10 transition-colors flex justify-between items-center" data-wheel="standard" data-price="0">
+                        <span class="text-sm font-medium tracking-wide">20" Aero Stealth</span>
+                        <span class="text-xs font-mono text-sa-silver/50">Included</span>
+                    </button>
+                    <button class="wheel-btn w-full text-left p-4 border border-sa-silver/10 hover:border-sa-silver/50 bg-sa-silver/5 hover:bg-sa-silver/10 transition-colors flex justify-between items-center" data-wheel="carbon" data-price="15000">
+                        <span class="text-sm font-medium tracking-wide">21" Carbon Forged</span>
+                        <span class="text-xs font-mono text-sa-silver/50">+$15,000</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Interior -->
+            <div>
+                <h3 class="text-xs uppercase tracking-widest text-sa-gold mb-6 font-mono">3. Interior Theme</h3>
+                <div class="space-y-4">
+                    <button class="int-btn w-full text-left p-4 border border-sa-gold bg-sa-silver/5 hover:bg-sa-silver/10 transition-colors flex justify-between items-center" data-int="onyx" data-price="0">
+                        <span class="text-sm font-medium tracking-wide">Onyx Alcantara</span>
+                    </button>
+                    <button class="int-btn w-full text-left p-4 border border-sa-silver/10 hover:border-sa-silver/50 bg-sa-silver/5 hover:bg-sa-silver/10 transition-colors flex justify-between items-center" data-int="ivory" data-price="8000">
+                        <span class="text-sm font-medium tracking-wide">Ivory Leather</span>
+                        <span class="text-xs font-mono text-sa-silver/50">+$8,000</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="p-8 border-t border-sa-silver/10 bg-sa-black flex-shrink-0">
+            <div class="flex justify-between items-end mb-6">
+                <span class="text-xs uppercase tracking-widest text-sa-silver/50">Total Est.</span>
+                <span class="text-3xl font-display font-light text-sa-gold" id="price-display">$2,500,000</span>
+            </div>
+            <button class="w-full bg-sa-silver text-sa-black py-4 font-bold uppercase tracking-widest hover:bg-sa-gold transition-colors">
+                Save & Request
+            </button>
+        </div>
+    </div>
+
+    <!-- Instructions -->
+    <div class="absolute bottom-8 left-8 text-xs uppercase tracking-widest text-sa-silver/30 pointer-events-none ui-layer opacity-0">Rotate: Left Click • Zoom: Scroll</div>
+
+    <script src="transition.js"></script>
+    <script>
+        // State
+        const basePrice = 2500000;
+        let config = {
+            paintPrice: 0,
+            wheelPrice: 0,
+            intPrice: 0
+        };
+
+        function updatePrice() {
+            const total = basePrice + config.paintPrice + config.wheelPrice + config.intPrice;
+            document.getElementById('price-display').innerText = '$' + total.toLocaleString();
+        }
+
+        // Logic
+        document.addEventListener("DOMContentLoaded", () => {
+            gsap.to('#config-panel', { x: 0, opacity: 1, duration: 1.2, ease: "power3.out", delay: 0.5 });
+            gsap.to('.ui-layer', { opacity: 1, duration: 1, delay: 1 });
+            
+            // Buttons logic
+            document.querySelectorAll('.color-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.color-btn').forEach(b => b.classList.replace('border-sa-gold', 'border-transparent'));
+                    const target = e.currentTarget;
+                    target.classList.replace('border-transparent', 'border-sa-gold');
+                    config.paintPrice = parseInt(target.getAttribute('data-price'));
+                    
+                    // Update ThreeJS Color
+                    const colorHex = parseInt(target.getAttribute('data-color'), 16);
+                    gsap.to(carMaterial.color, { r: new THREE.Color(colorHex).r, g: new THREE.Color(colorHex).g, b: new THREE.Color(colorHex).b, duration: 1 });
+                    
+                    updatePrice();
+                });
+            });
+
+            document.querySelectorAll('.wheel-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.wheel-btn').forEach(b => {
+                        b.classList.remove('border-sa-gold');
+                        b.classList.add('border-sa-silver/10');
+                    });
+                    const target = e.currentTarget;
+                    target.classList.replace('border-sa-silver/10', 'border-sa-gold');
+                    config.wheelPrice = parseInt(target.getAttribute('data-price'));
+                    
+                    // Update Scene (spin or bounce)
+                    gsap.fromTo(carMesh.scale, {y: 1.1}, {y: 1, duration: 0.5, ease: "bounce.out"});
+                    
+                    updatePrice();
+                });
+            });
+
+            document.querySelectorAll('.int-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.int-btn').forEach(b => {
+                        b.classList.remove('border-sa-gold');
+                        b.classList.add('border-sa-silver/10');
+                    });
+                    const target = e.currentTarget;
+                    target.classList.replace('border-sa-silver/10', 'border-sa-gold');
+                    config.intPrice = parseInt(target.getAttribute('data-price'));
+                    
+                    // Inside lighting change effect
+                    const isDark = target.getAttribute('data-int') === 'onyx';
+                    gsap.to(intLight, { intensity: isDark ? 0 : 2, duration: 1 });
+                    
+                    updatePrice();
+                });
+            });
+
+            initThreeJS();
+        });
+
+        // 3D Configurator Setup
+        let scene, camera, renderer, carMesh, carMaterial, intLight;
+
+        function initThreeJS() {
+            const container = document.getElementById('cfg-canvas');
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x050505);
+
+            camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 100);
+            camera.position.set(-20, 10, 20);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            container.appendChild(renderer.domElement);
+
+            const controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.maxPolarAngle = Math.PI / 2;
+            controls.minDistance = 10;
+            controls.maxDistance = 40;
+            
+            // Adjust center slightly left to accommodate the right panel
+            controls.target.set(window.innerWidth > 768 ? 4 : 0, 0, 0);
+
+            // Ground
+            const planeGeo = new THREE.PlaneGeometry(100, 100);
+            const planeMat = new THREE.MeshStandardMaterial({ color: 0x030303, roughness: 0.1, metalness: 0.8 });
+            const plane = new THREE.Mesh(planeGeo, planeMat);
+            plane.rotation.x = -Math.PI / 2;
+            plane.position.y = -3;
+            plane.receiveShadow = true;
+            scene.add(plane);
+
+            // Chassis Abstraction representing a high-end luxury form
+            const geometry = new THREE.IcosahedronGeometry(4, 15);
+            carMaterial = new THREE.MeshPhysicalMaterial({
+                color: 0x111111,
+                metalness: 0.9,
+                roughness: 0.1,
+                clearcoat: 1.0,
+                clearcoatRoughness: 0.05,
+            });
+            carMesh = new THREE.Mesh(geometry, carMaterial);
+            carMesh.castShadow = true;
+            carMesh.position.set(window.innerWidth > 768 ? 4 : 0, 1, 0);
+            scene.add(carMesh);
+
+            // Interior light simulation
+            intLight = new THREE.PointLight(0xffffff, 0, 10);
+            intLight.position.copy(carMesh.position);
+            scene.add(intLight);
+
+            // Lighting setup for glossy paint
+            const ambient = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambient);
+
+            const dirLight = new THREE.DirectionalLight(0xffffff, 2);
+            dirLight.position.set(10, 20, 10);
+            dirLight.castShadow = true;
+            dirLight.shadow.mapSize.width = 2048;
+            dirLight.shadow.mapSize.height = 2048;
+            scene.add(dirLight);
+
+            const rectLight = new THREE.RectAreaLight(0xffffff, 5, 20, 10);
+            rectLight.position.set(-10, 10, -10);
+            rectLight.lookAt(carMesh.position);
+            scene.add(rectLight);
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                controls.target.set(window.innerWidth > 768 ? 4 : 0, 0, 0);
+                carMesh.position.set(window.innerWidth > 768 ? 4 : 0, 1, 0);
+                intLight.position.copy(carMesh.position);
+            });
+
+            gsap.ticker.add(() => {
+                carMesh.rotation.y += 0.001;
+                controls.update();
+                renderer.render(scene, camera);
+            });
+        }
+    </script>
+</body>
+</html>

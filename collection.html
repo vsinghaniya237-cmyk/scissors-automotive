@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SA Collection | Scissors Associate</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Outfit:wght@200;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { sa: { black: '#0a0a0a', dark: '#141414', graphite: '#1f1f1f', silver: '#e0e0e0', gold: '#d4af37', chrome: '#bfbfbf' } },
+                    fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Outfit', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+</head>
+<body class="bg-sa-black text-sa-silver font-sans overflow-x-hidden antialiased opacity-0 transition-opacity duration-1000" id="body">
+    
+    <nav class="fixed top-0 w-full z-50 px-8 py-6 mix-blend-difference flex justify-between items-center transition-all duration-500 bg-sa-black/20 backdrop-blur-md border-b border-sa-silver/10" id="navbar">
+        <a href="index.html" class="text-3xl font-display font-bold tracking-widest uppercase cursor-pointer" id="logo">
+            SA<span class="text-sa-gold">.</span>
+        </a>
+        <ul class="hidden md:flex space-x-12 font-medium tracking-widest text-sm uppercase">
+            <li><a href="about.html" class="hover:text-sa-gold transition-colors duration-300">About</a></li>
+            <li><a href="collection.html" class="text-sa-gold transition-colors duration-300">Collection</a></li>
+            <li><a href="technology.html" class="hover:text-sa-gold transition-colors duration-300">Technology</a></li>
+            <li><a href="experience.html" class="hover:text-sa-gold transition-colors duration-300">Experience</a></li>
+        </ul>
+        <a href="configure.html" class="bg-sa-silver text-sa-black px-6 py-2 uppercase text-xs tracking-widest hover:bg-sa-gold transition-all duration-300 font-bold">
+            Configurator
+        </a>
+    </nav>
+
+    <main class="pt-32 pb-32 min-h-screen relative">
+        <div class="absolute inset-0 z-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-sa-graphite to-sa-black opacity-50 pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto px-8 relative z-10">
+            <h1 class="text-6xl font-display font-light mb-4 uppercase tracking-[0.2em] transform translate-y-10 opacity-0 page-title">Masterpieces</h1>
+            <p class="text-sa-silver/50 tracking-widest uppercase text-sm mb-20 transform translate-y-10 opacity-0 page-sub">Select a chassis to explore</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 collection-grid">
+                <!-- Card 1 -->
+                <a href="car.html?model=phantom" class="block group relative perspective-1000 tilt-card transform translate-y-20 opacity-0">
+                    <div class="relative h-[500px] bg-sa-dark rounded-xl overflow-hidden shadow-2xl border border-sa-silver/5 transition-all duration-300 inner-card">
+                        <div class="absolute inset-0 bg-gradient-to-t from-sa-black to-transparent z-10 pointer-events-none"></div>
+                        <img src="assets/car-1.jpg" alt="SA Phantom" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute bottom-8 left-8 z-20 w-full pr-16 layout-content">
+                            <span class="text-xs font-mono text-sa-gold tracking-widest mb-2 block">HYBRID HYPERCAR</span>
+                            <h2 class="text-4xl font-display font-light tracking-widest mb-4">Phantom</h2>
+                            <div class="flex space-x-6 text-sm text-sa-silver/60 font-mono">
+                                <div><span class="text-sa-silver block">1.9s</span>0-60</div>
+                                <div><span class="text-sa-silver block">1500HP</span>Power</div>
+                            </div>
+                        </div>
+                        <div class="absolute top-0 left-0 w-full h-full bg-sa-gold/0 group-hover:bg-sa-gold/10 transition-colors duration-700 pointer-events-none mix-blend-overlay"></div>
+                    </div>
+                </a>
+
+                <!-- Card 2 -->
+                <a href="car.html?model=eclipse" class="block group relative perspective-1000 tilt-card transform translate-y-20 opacity-0 md:mt-24">
+                    <div class="relative h-[500px] bg-sa-dark rounded-xl overflow-hidden shadow-2xl border border-sa-silver/5 transition-all duration-300 inner-card">
+                        <div class="absolute inset-0 bg-gradient-to-t from-sa-black to-transparent z-10 pointer-events-none"></div>
+                        <img src="assets/car-2.jpg" alt="SA Eclipse" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute bottom-8 left-8 z-20 w-full pr-16 layout-content">
+                            <span class="text-xs font-mono text-sa-gold tracking-widest mb-2 block">PURE ELECTRIC</span>
+                            <h2 class="text-4xl font-display font-light tracking-widest mb-4">Eclipse</h2>
+                            <div class="flex space-x-6 text-sm text-sa-silver/60 font-mono">
+                                <div><span class="text-sa-silver block">2.1s</span>0-60</div>
+                                <div><span class="text-sa-silver block">450mi</span>Range</div>
+                            </div>
+                        </div>
+                        <div class="absolute top-0 left-0 w-full h-full bg-sa-gold/0 group-hover:bg-sa-gold/10 transition-colors duration-700 pointer-events-none mix-blend-overlay"></div>
+                    </div>
+                </a>
+
+                <!-- Card 3 -->
+                <a href="car.html?model=zenith" class="block group relative perspective-1000 tilt-card transform translate-y-20 opacity-0">
+                    <div class="relative h-[500px] bg-sa-dark rounded-xl overflow-hidden shadow-2xl border border-sa-silver/5 transition-all duration-300 inner-card">
+                        <div class="absolute inset-0 bg-gradient-to-t from-sa-black to-transparent z-10 pointer-events-none"></div>
+                        <img src="assets/car-3.jpg" alt="SA Zenith" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute bottom-8 left-8 z-20 w-full pr-16 layout-content">
+                            <span class="text-xs font-mono text-sa-gold tracking-widest mb-2 block">TRACK FOCUSED</span>
+                            <h2 class="text-4xl font-display font-light tracking-widest mb-4">Zenith</h2>
+                            <div class="flex space-x-6 text-sm text-sa-silver/60 font-mono">
+                                <div><span class="text-sa-silver block">1.8s</span>0-60</div>
+                                <div><span class="text-sa-silver block">1800HP</span>Power</div>
+                            </div>
+                        </div>
+                        <div class="absolute top-0 left-0 w-full h-full bg-sa-gold/0 group-hover:bg-sa-gold/10 transition-colors duration-700 pointer-events-none mix-blend-overlay"></div>
+                    </div>
+                </a>
+
+                 <!-- Card 4 (Concept Reused Image) -->
+                 <a href="car.html?model=concept" class="block group relative perspective-1000 tilt-card transform translate-y-20 opacity-0 md:mt-24">
+                    <div class="relative h-[500px] bg-sa-dark rounded-xl overflow-hidden shadow-2xl border border-sa-silver/5 transition-all duration-300 inner-card">
+                        <div class="absolute inset-0 bg-gradient-to-t from-sa-black to-transparent z-10 pointer-events-none"></div>
+                        <img src="assets/tech-hologram.jpg" alt="SA Concept X" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 grayscale group-hover:grayscale-0 mix-blend-screen opacity-80">
+                        <div class="absolute bottom-8 left-8 z-20 w-full pr-16 layout-content">
+                            <span class="text-xs font-mono text-sa-gold tracking-widest mb-2 block">CONCEPT SHOWCASE</span>
+                            <h2 class="text-4xl font-display font-light tracking-widest mb-4">Project X</h2>
+                            <div class="flex space-x-6 text-sm text-sa-silver/60 font-mono">
+                                <div><span class="text-sa-silver block">TBA</span>0-60</div>
+                                <div><span class="text-sa-silver block">Classified</span>Power</div>
+                            </div>
+                        </div>
+                        <div class="absolute top-0 left-0 w-full h-full bg-sa-gold/0 group-hover:bg-sa-gold/10 transition-colors duration-700 pointer-events-none mix-blend-overlay"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-sa-black py-16 border-t border-sa-silver/10 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center relative z-10">
+            <div class="text-2xl font-display font-bold tracking-widest uppercase mb-8 md:mb-0">SA<span class="text-sa-gold">.</span></div>
+            <p class="text-xs text-sa-silver/40 font-mono">© 2026 Scissors Associate.</p>
+        </div>
+    </footer>
+
+    <script src="transition.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            gsap.to('.page-title', { opacity: 1, y: 0, duration: 1, ease: 'power3.out', delay: 0.2 });
+            gsap.to('.page-sub', { opacity: 1, y: 0, duration: 1, ease: 'power3.out', delay: 0.4 });
+            
+            gsap.to('.tilt-card', {
+                opacity: 1, y: 0, duration: 1, stagger: 0.15, ease: 'power3.out', delay: 0.6
+            });
+
+            // 3D Tilt Effect pure JS
+            const cards = document.querySelectorAll('.tilt-card');
+            cards.forEach(card => {
+                const inner = card.querySelector('.inner-card');
+                card.addEventListener('mousemove', e => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = ((y - centerY) / centerY) * -10;
+                    const rotateY = ((x - centerX) / centerX) * 10;
+                    
+                    inner.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    inner.style.transform = `rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                });
+            });
+        });
+    </script>
+</body>
+</html>

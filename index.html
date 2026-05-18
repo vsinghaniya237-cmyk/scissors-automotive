@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SA – Scissors Associate | Precision in Motion</title>
+    <meta name="description" content="SA - Scissors Associate. Precision in Motion. The premier luxury automotive brand headquartered in London.">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Outfit:wght@200;400;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sa: {
+                            black: '#0a0a0a',
+                            dark: '#141414',
+                            graphite: '#1f1f1f',
+                            silver: '#e0e0e0',
+                            gold: '#d4af37',
+                            chrome: '#bfbfbf',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <!-- Three.js via CDN directly -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body class="bg-sa-black text-sa-silver font-sans overflow-x-hidden antialiased opacity-0 transition-opacity duration-1000" id="body">
+    <!-- Loader -->
+    <div id="loader" class="fixed inset-0 z-50 bg-sa-black flex items-center justify-center transition-opacity duration-1000">
+        <div class="relative w-48 h-48 flex items-center justify-center" id="loader-container">
+            <!-- Scissor blades (SVG) -->
+            <svg id="loader-scissor" class="absolute w-24 h-24 text-sa-silver transition-all duration-1000" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="6" cy="6" r="3"></circle>
+                <circle cx="6" cy="18" r="3"></circle>
+                <line x1="20" y1="4" x2="8.12" y2="15.88"></line>
+                <line x1="14.47" y1="14.48" x2="20" y2="20"></line>
+                <line x1="8.12" y1="8.12" x2="12" y2="12"></line>
+            </svg>
+            <!-- Tire (SVG) fades in -->
+            <svg id="loader-tire" class="absolute w-24 h-24 text-sa-silver opacity-0 scale-50 transition-all duration-1000" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <circle cx="12" cy="12" r="4"></circle>
+                <path d="M12 2v2"></path>
+                <path d="M12 20v2"></path>
+                <path d="M22 12h-2"></path>
+                <path d="M4 12H2"></path>
+                <path d="M19.07 4.93l-1.41 1.41"></path>
+                <path d="M6.34 17.66l-1.41 1.41"></path>
+                <path d="M19.07 19.07l-1.41-1.41"></path>
+                <path d="M6.34 6.34L4.93 4.93"></path>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-40 px-8 py-6 mix-blend-difference flex justify-between items-center transition-all duration-500" id="navbar">
+        <div class="text-3xl font-display font-bold tracking-widest uppercase cursor-pointer" id="logo">
+            SA<span class="text-sa-gold">.</span>
+        </div>
+        <ul class="hidden md:flex space-x-12 font-medium tracking-widest text-sm uppercase">
+            <li><a href="about.html" class="hover:text-sa-gold transition-colors duration-300">About</a></li>
+            <li><a href="collection.html" class="hover:text-sa-gold transition-colors duration-300">Collection</a></li>
+            <li><a href="technology.html" class="hover:text-sa-gold transition-colors duration-300">Technology</a></li>
+            <li><a href="experience.html" class="hover:text-sa-gold transition-colors duration-300">Experience</a></li>
+        </ul>
+        <button id="sound-toggle" class="bg-transparent border border-sa-silver px-6 py-2 uppercase text-xs tracking-widest hover:bg-sa-silver hover:text-sa-black transition-all duration-300">
+            Sound: Off
+        </button>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="relative h-screen flex items-center justify-center overflow-hidden">
+            <div id="canvas-container" class="absolute inset-0 z-0 pointer-events-auto"></div>
+            <!-- Overlay gradient to blend bottom edge -->
+            <div class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-sa-black to-transparent z-0 pointer-events-none"></div>
+
+            <div class="relative z-10 text-center pointer-events-none mt-32 mix-blend-difference">
+                <h1 class="text-6xl md:text-8xl font-display font-light uppercase tracking-[0.2em] mb-4 opacity-0 hero-text">Scissors Associate</h1>
+                <p class="text-xl md:text-2xl font-light tracking-[0.3em] text-sa-silver opacity-0 hero-sub">Precision in Motion</p>
+                <div class="mt-12 opacity-0 hero-btn pointer-events-auto">
+                    <a href="collection.html" class="inline-block border-b border-sa-silver pb-2 text-sm uppercase tracking-widest hover:text-sa-gold hover:border-sa-gold transition-all duration-300">Explore the Machine</a>
+                </div>
+            </div>
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center opacity-0 hero-scroll pointer-events-none mix-blend-difference">
+                <span class="text-xs uppercase tracking-widest mb-2">Scroll</span>
+                <div class="w-[1px] h-12 bg-sa-silver/30 overflow-hidden relative">
+                    <div class="w-full h-full bg-sa-silver absolute top-0 -translate-y-full scroll-line"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-32 px-8 max-w-7xl mx-auto relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="text-xs uppercase tracking-[0.3em] text-sa-gold mb-4 reveal-text">Est. 1985 • London</h2>
+                    <h3 class="text-4xl md:text-5xl font-display font-light mb-8 leading-tight reveal-text">A legacy forged in precision and unmatched performance.</h3>
+                    <p class="text-sa-silver/70 mb-6 font-light leading-relaxed reveal-text">Since our inception, SA has redefined the boundaries of automotive engineering. From the streets of London to global racing circuits, our hypercars are a testament to relentless innovation.</p>
+                    <button class="text-sm uppercase tracking-widest border-b border-sa-silver/50 pb-1 mt-4 hover:text-sa-gold hover:border-sa-gold transition-all duration-300 reveal-text">Our Philosophy</button>
+                </div>
+                <div class="relative h-[600px] w-full overflow-hidden group rounded-lg reveal-image">
+                    <img src="assets/hq-london.jpg" alt="London HQ" class="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-1000 origin-center grayscale brightness-75 hover:brightness-100 hover:grayscale-0">
+                    <div class="absolute inset-0 bg-gradient-to-t from-sa-black via-transparent to-transparent opacity-80 group-hover:opacity-50 transition-opacity duration-1000"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Car Collection -->
+        <section id="collection" class="py-32 bg-sa-dark relative">
+            <div class="max-w-7xl mx-auto px-8">
+                <h2 class="text-5xl font-display font-light mb-16 text-center tracking-widest reveal-text">The Lineup</h2>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Model 1 -->
+                    <div class="group cursor-pointer collection-item">
+                        <div class="relative h-96 overflow-hidden bg-sa-graphite rounded-lg mb-6 flex items-center justify-center p-8 shadow-2xl">
+                            <img src="assets/car-1.jpg" alt="SA Phantom" class="w-full h-full object-cover rounded transform group-hover:scale-110 group-hover:translate-x-4 transition-all duration-700 ease-out grayscale group-hover:grayscale-0">
+                            <div class="absolute top-4 left-4 text-xs font-mono text-sa-silver/50 mix-blend-difference">01</div>
+                            <div class="absolute inset-0 bg-sa-black/20 group-hover:bg-transparent transition-colors duration-500"></div>
+                        </div>
+                        <h3 class="text-2xl font-display tracking-wider mb-2">SA Phantom</h3>
+                        <div class="flex justify-between text-sm text-sa-silver/60 font-mono border-t border-sa-silver/20 pt-4 mt-4">
+                            <span>0-60 mph<br><span class="text-sa-silver text-lg">1.9s</span></span>
+                            <span>Top Speed<br><span class="text-sa-silver text-lg">250mph</span></span>
+                            <span>Engine<br><span class="text-sa-silver text-lg">V12 Hybrid</span></span>
+                        </div>
+                    </div>
+                    
+                    <!-- Model 2 -->
+                    <div class="group cursor-pointer collection-item">
+                        <div class="relative h-96 overflow-hidden bg-sa-graphite rounded-lg mb-6 flex items-center justify-center p-8 shadow-2xl">
+                            <img src="assets/car-2.jpg" alt="SA Eclipse" class="w-full h-full object-cover rounded transform group-hover:scale-110 group-hover:-translate-x-4 transition-all duration-700 ease-out grayscale group-hover:grayscale-0">
+                            <div class="absolute top-4 left-4 text-xs font-mono text-sa-silver/50 mix-blend-difference">02</div>
+                            <div class="absolute inset-0 bg-sa-black/20 group-hover:bg-transparent transition-colors duration-500"></div>
+                        </div>
+                        <h3 class="text-2xl font-display tracking-wider mb-2">SA Eclipse</h3>
+                        <div class="flex justify-between text-sm text-sa-silver/60 font-mono border-t border-sa-silver/20 pt-4 mt-4">
+                            <span>0-60 mph<br><span class="text-sa-silver text-lg">2.1s</span></span>
+                            <span>Top Speed<br><span class="text-sa-silver text-lg">230mph</span></span>
+                            <span>Range<br><span class="text-sa-silver text-lg">450mi</span></span>
+                        </div>
+                    </div>
+
+                    <!-- Model 3 -->
+                    <div class="group cursor-pointer collection-item">
+                        <div class="relative h-96 overflow-hidden bg-sa-graphite rounded-lg mb-6 flex items-center justify-center p-8 shadow-2xl">
+                            <img src="assets/car-3.jpg" alt="SA Zenith" class="w-full h-full object-cover rounded transform group-hover:scale-110 transition-all duration-700 ease-out grayscale group-hover:grayscale-0">
+                            <div class="absolute top-4 left-4 text-xs font-mono text-sa-silver/50 mix-blend-difference">03</div>
+                            <div class="absolute inset-0 bg-sa-black/20 group-hover:bg-transparent transition-colors duration-500"></div>
+                        </div>
+                        <h3 class="text-2xl font-display tracking-wider mb-2">SA Zenith</h3>
+                        <div class="flex justify-between text-sm text-sa-silver/60 font-mono border-t border-sa-silver/20 pt-4 mt-4">
+                            <span>0-60 mph<br><span class="text-sa-silver text-lg">1.8s</span></span>
+                            <span>Top Speed<br><span class="text-sa-silver text-lg">260mph</span></span>
+                            <span>Power<br><span class="text-sa-silver text-lg">1800HP</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technology Section -->
+        <section id="technology" class="py-32 px-8 mx-auto relative min-h-screen flex items-center justify-center border-y border-sa-silver/10 overflow-hidden">
+            <div class="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-sa-graphite to-sa-black"></div>
+            
+            <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 relative z-10 w-full items-center">
+                <div class="space-y-12">
+                    <h2 class="text-5xl font-display font-light tracking-widest reveal-text">Next-Gen AI & Aerodynamics</h2>
+                    
+                    <div class="tech-item bg-sa-black/40 backdrop-blur-md p-8 rounded-lg border border-sa-silver/10 relative overflow-hidden group reveal-text">
+                        <div class="absolute inset-0 bg-sa-gold/5 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-700"></div>
+                        <h4 class="text-xl font-medium mb-2 relative z-10 text-sa-gold">SA Neural Drive</h4>
+                        <p class="text-sa-silver/60 text-sm relative z-10">Advanced AI co-pilot analyzing millions of data points per second for optimal track and street handling.</p>
+                    </div>
+
+                    <div class="tech-item bg-sa-black/40 backdrop-blur-md p-8 rounded-lg border border-sa-silver/10 relative overflow-hidden group reveal-text">
+                        <div class="absolute inset-0 bg-sa-gold/5 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-700"></div>
+                        <h4 class="text-xl font-medium mb-2 relative z-10 text-sa-gold">Active Aero Morphing</h4>
+                        <p class="text-sa-silver/60 text-sm relative z-10">Chassis components that literally change shape to reduce drag by 40% at high speeds.</p>
+                    </div>
+                </div>
+                <div class="relative h-[600px] w-full flex items-center justify-center reveal-image">
+                   <img src="assets/tech-hologram.jpg" alt="Technology Diagram" class="w-full h-full object-cover Mix-blend-screen opacity-80 tech-image mask-image-gradient rounded-lg">
+                </div>
+            </div>
+        </section>
+
+        <!-- Reviews & Trust -->
+        <section class="py-32 px-8 max-w-7xl mx-auto">
+            <div class="text-center mb-16 reveal-text">
+                <h2 class="text-sm font-mono text-sa-gold mb-2 tracking-widest">Global Recognition</h2>
+                <h3 class="text-3xl font-display tracking-widest uppercase">Over 5000+ Verified Owners</h3>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="review-card bg-gradient-to-b from-sa-graphite/30 to-transparent p-10 border border-sa-silver/10 hover:border-sa-gold/30 hover:-translate-y-2 transition-all duration-500 rounded-lg shadow-xl">
+                    <div class="flex text-sa-gold mb-6">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                    </div>
+                    <p class="text-sa-silver leading-relaxed font-light mb-8">"An absolute masterpiece of engineering. Driving an SA isn't just transportation; it's a profound experience. The handling is entirely telepathic."</p>
+                    <div class="flex items-center">
+                        <div class="h-[1px] w-8 bg-sa-gold mr-4"></div>
+                        <span class="text-xs uppercase tracking-widest text-sa-silver/70">James R., London</span>
+                    </div>
+                </div>
+
+                <div class="review-card bg-gradient-to-b from-sa-graphite/30 to-transparent p-10 border border-sa-silver/10 hover:border-sa-gold/30 hover:-translate-y-2 transition-all duration-500 rounded-lg shadow-xl" style="transition-delay: 100ms;">
+                    <div class="flex text-sa-gold mb-6">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                    </div>
+                    <p class="text-sa-silver leading-relaxed font-light mb-8">"I've driven Ferraris and Porsches for decades, but the Zenith represents a paradigm shift. The build quality and presence are unmatched."</p>
+                    <div class="flex items-center">
+                        <div class="h-[1px] w-8 bg-sa-gold mr-4"></div>
+                        <span class="text-xs uppercase tracking-widest text-sa-silver/70">Arthur W., Dubai</span>
+                    </div>
+                </div>
+
+                <div class="review-card bg-gradient-to-b from-sa-graphite/30 to-transparent p-10 border border-sa-silver/10 hover:border-sa-gold/30 hover:-translate-y-2 transition-all duration-500 rounded-lg shadow-xl" style="transition-delay: 200ms;">
+                    <div class="flex text-sa-gold mb-6">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                    </div>
+                    <p class="text-sa-silver leading-relaxed font-light mb-8">"It's rare to see a brand perfectly balance luxury with raw, terrifying track performance. The materials inside look like fine jewelry."</p>
+                    <div class="flex items-center">
+                        <div class="h-[1px] w-8 bg-sa-gold mr-4"></div>
+                        <span class="text-xs uppercase tracking-widest text-sa-silver/70">Elena C., Monaco</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="py-32 bg-sa-dark reveal-section">
+            <div class="max-w-4xl mx-auto px-8 relative z-10">
+                <div class="text-center mb-16">
+                    <h2 class="text-5xl font-display font-light uppercase tracking-widest mb-4">Build Your SA</h2>
+                    <p class="text-sa-silver/60">Commission your bespoke masterpiece or book a private viewing in London.</p>
+                </div>
+
+                <form class="space-y-8 bg-sa-black/50 p-12 border border-sa-silver/10 backdrop-blur-md rounded-lg shadow-2xl relative">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-sa-gold/20 to-transparent blur-sm -z-10 rounded-lg"></div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <label class="block text-xs uppercase tracking-widest text-sa-silver/50 mb-2">First Name</label>
+                            <input type="text" class="w-full bg-transparent border-b border-sa-silver/30 py-2 focus:outline-none focus:border-sa-gold transition-colors text-sa-silver" placeholder="John">
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase tracking-widest text-sa-silver/50 mb-2">Last Name</label>
+                            <input type="text" class="w-full bg-transparent border-b border-sa-silver/30 py-2 focus:outline-none focus:border-sa-gold transition-colors text-sa-silver" placeholder="Doe">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-xs uppercase tracking-widest text-sa-silver/50 mb-2">Model of Interest</label>
+                        <select class="w-full bg-transparent border-b border-sa-silver/30 py-2 focus:outline-none focus:border-sa-gold transition-colors text-sa-silver appearance-none">
+                            <option value="phantom" class="bg-sa-black">SA Phantom</option>
+                            <option value="eclipse" class="bg-sa-black">SA Eclipse</option>
+                            <option value="zenith" class="bg-sa-black">SA Zenith</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="w-full mt-8 bg-sa-silver text-sa-black py-4 uppercase tracking-widest font-medium hover:bg-sa-gold hover:text-sa-black transition-colors duration-300 transform hover:scale-[1.02]">Request Commission</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-sa-black py-16 border-t border-sa-silver/10 relative overflow-hidden">
+        <div class="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-sa-gold/50 to-transparent top-0"></div>
+        <div class="max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center relative z-10">
+            <div class="text-2xl font-display font-bold tracking-widest uppercase mb-8 md:mb-0">
+                SA<span class="text-sa-gold">.</span>
+            </div>
+            <div class="flex space-x-8 text-sm uppercase tracking-widest text-sa-silver/50">
+                <a href="#" class="hover:text-sa-gold transition-colors">Instagram</a>
+                <a href="#" class="hover:text-sa-gold transition-colors">LinkedIn</a>
+                <a href="#" class="hover:text-sa-gold transition-colors">YouTube</a>
+            </div>
+            <p class="text-xs text-sa-silver/40 mt-8 md:mt-0 font-mono">© 2026 Scissors Associate. Precision in Motion.</p>
+        </div>
+    </footer>
+
+    
+    <script src="transition.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
