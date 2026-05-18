@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SA Experience | Scissors Associate</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Outfit:wght@200;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: { sa: { black: '#0a0a0a', dark: '#141414', graphite: '#1f1f1f', silver: '#e0e0e0', gold: '#d4af37' } }, fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Outfit', 'sans-serif'] } } } }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <!-- Three.js via CDN directly -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body class="bg-sa-black text-sa-silver font-sans overflow-x-hidden antialiased opacity-0 transition-opacity duration-1000" id="body">
+    
+    <nav class="fixed top-0 w-full z-50 px-4 md:px-8 py-4 md:py-6 mix-blend-difference flex justify-between items-center transition-all duration-500 bg-sa-black/20 backdrop-blur-md" id="navbar">
+        <a href="index.html" class="text-2xl md:text-3xl font-display font-bold tracking-widest uppercase cursor-pointer">SA<span class="text-sa-gold">.</span></a>
+        
+        <!-- Desktop Menu -->
+        <ul class="hidden md:flex space-x-12 font-medium tracking-widest text-sm uppercase">
+            <li><a href="about.html" class="hover:text-sa-gold transition-colors duration-300">About</a></li>
+            <li><a href="collection.html" class="hover:text-sa-gold transition-colors duration-300">Collection</a></li>
+            <li><a href="technology.html" class="hover:text-sa-gold transition-colors duration-300">Technology</a></li>
+            <li><a href="experience.html" class="text-sa-gold transition-colors duration-300">Experience</a></li>
+        </ul>
+        
+        <div class="flex items-center gap-4">
+            <a href="configure.html" class="hidden md:block bg-sa-silver text-sa-black px-6 py-2 uppercase text-xs tracking-widest hover:bg-sa-gold transition-all duration-300 font-bold">Configurator</a>
+            
+            <!-- Hamburger Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-sa-silver focus:outline-none z-50 mix-blend-difference">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 bg-sa-black z-40 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-500">
+        <ul class="flex flex-col space-y-8 font-display tracking-widest text-2xl uppercase text-center">
+            <li><a href="about.html" class="hover:text-sa-gold transition-colors duration-300">About</a></li>
+            <li><a href="collection.html" class="hover:text-sa-gold transition-colors duration-300">Collection</a></li>
+            <li><a href="technology.html" class="hover:text-sa-gold transition-colors duration-300">Technology</a></li>
+            <li><a href="experience.html" class="text-sa-gold transition-colors duration-300">Experience</a></li>
+        </ul>
+        <a href="configure.html" class="mt-12 bg-sa-silver text-sa-black px-6 py-2 uppercase text-xs tracking-widest hover:bg-sa-gold transition-all duration-300 font-bold">Configurator</a>
+    </div>
+
+    <!-- Virtual Showroom Canvas -->
+    <div id="showroom-canvas" class="fixed inset-0 z-0 pointer-events-none"></div>
+
+    <main class="relative z-10">
+        <!-- Hero Section -->
+        <section class="min-h-screen flex items-center justify-center pt-24 pb-12 relative px-4 md:px-8 flex-col text-center ui-glow w-full overflow-hidden">
+            <h1 class="text-[10px] md:text-xs uppercase tracking-[0.4em] text-sa-gold mb-6 font-mono reveal-y">The Showroom</h1>
+            <h2 class="text-4xl sm:text-5xl md:text-7xl font-display font-light uppercase tracking-[0.1em] md:tracking-widest mb-6 md:mb-8 reveal-y break-words w-full">Immerse Yourself.</h2>
+            <p class="text-sa-silver/60 max-w-lg mb-12 md:mb-16 text-base md:text-lg reveal-y">Step into the architecture of ultimate luxury. Schedule your private viewing at our London headquarters.</p>
+            
+            <div class="animate-bounce mt-auto reveal-y">
+                <span class="text-xs font-mono uppercase tracking-widest text-sa-silver/40">Scroll to Explore</span>
+                <div class="w-px h-12 bg-sa-silver/20 mx-auto mt-4"></div>
+            </div>
+        </section>
+
+        <!-- Contact Form Section -->
+        <section class="min-h-screen flex items-center justify-center py-20 md:py-24 px-4 md:px-8 relative w-full overflow-hidden" id="contact-sec">
+            <div class="w-full max-w-2xl bg-sa-black/60 backdrop-blur-xl border border-sa-silver/10 p-6 md:p-12 rounded-xl shadow-2xl reveal-y">
+                <h3 class="text-2xl md:text-3xl font-display uppercase tracking-widest mb-6 md:mb-8 text-center md:text-left">Request a Commission</h3>
+                
+                <form class="space-y-6 md:space-y-8">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
+                        <div class="group">
+                            <label class="block text-[10px] md:text-xs uppercase tracking-widest text-sa-silver/50 mb-2 font-mono group-focus-within:text-sa-gold transition-colors">First Name</label>
+                            <input type="text" class="w-full bg-transparent border-b border-sa-silver/30 py-2 md:py-3 focus:outline-none focus:border-sa-gold focus:shadow-[0_4px_10px_-4px_rgba(212,175,55,0.4)] transition-all text-sa-silver">
+                        </div>
+                        <div class="group">
+                            <label class="block text-[10px] md:text-xs uppercase tracking-widest text-sa-silver/50 mb-2 font-mono group-focus-within:text-sa-gold transition-colors">Last Name</label>
+                            <input type="text" class="w-full bg-transparent border-b border-sa-silver/30 py-2 md:py-3 focus:outline-none focus:border-sa-gold focus:shadow-[0_4px_10px_-4px_rgba(212,175,55,0.4)] transition-all text-sa-silver">
+                        </div>
+                    </div>
+                    
+                    <div class="group">
+                        <label class="block text-xs uppercase tracking-widest text-sa-silver/50 mb-2 font-mono group-focus-within:text-sa-gold transition-colors">Email Address</label>
+                        <input type="email" class="w-full bg-transparent border-b border-sa-silver/30 py-3 focus:outline-none focus:border-sa-gold focus:shadow-[0_4px_10px_-4px_rgba(212,175,55,0.4)] transition-all text-sa-silver">
+                    </div>
+
+                    <div class="group">
+                        <label class="block text-xs uppercase tracking-widest text-sa-silver/50 mb-2 font-mono group-focus-within:text-sa-gold transition-colors">Preferred Model</label>
+                        <select class="w-full bg-transparent border-b border-sa-silver/30 py-3 focus:outline-none focus:border-sa-gold focus:shadow-[0_4px_10px_-4px_rgba(212,175,55,0.4)] transition-all text-sa-silver appearance-none cursor-pointer">
+                            <option value="phantom" class="bg-sa-black text-sa-silver">Phantom Hybrid</option>
+                            <option value="eclipse" class="bg-sa-black text-sa-silver">Eclipse Electric</option>
+                            <option value="zenith" class="bg-sa-black text-sa-silver">Zenith Track Issue</option>
+                            <option value="other" class="bg-sa-black text-sa-silver">Undecided / View Only</option>
+                        </select>
+                    </div>
+
+                    <div class="pt-6">
+                        <button type="button" class="w-full border border-sa-gold bg-sa-gold/5 text-sa-gold py-4 uppercase tracking-widest font-bold hover:bg-sa-gold hover:text-sa-black transition-all duration-300">
+                            Submit Inquiry
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <footer class="bg-sa-black py-12 border-t border-sa-silver/10 mt-16 md:mt-24 w-full">
+            <div class="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-4 md:gap-0">
+                <div class="text-xl font-display font-bold tracking-widest uppercase">SA<span class="text-sa-gold">.</span></div>
+                <p class="text-[10px] md:text-xs text-sa-silver/40 font-mono">Precision in Motion.</p>
+            </div>
+        </footer>
+    </main>
+
+    <script src="transition.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            gsap.fromTo('.reveal-y', 
+                { opacity: 0, y: 30 },
+                { opacity: 1, y: 0, duration: 1.2, stagger: 0.2, ease: "power3.out", delay: 0.2 }
+            );
+
+            gsap.from('#contact-sec .reveal-y', {
+                scrollTrigger: { trigger: '#contact-sec', start: "top 80%" },
+                opacity: 0, y: 50, duration: 1
+            });
+
+            initShowroomThree();
+        });
+
+        // 3D Showroom Background Logic
+        function initShowroomThree() {
+            const container = document.getElementById('showroom-canvas');
+            const scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x050505, 0.02);
+
+            const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+            camera.position.set(0, 5, 25);
+
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.shadowMap.enabled = true;
+            container.appendChild(renderer.domElement);
+
+            // Floor
+            const floorGeo = new THREE.PlaneGeometry(200, 200);
+            const floorMat = new THREE.MeshStandardMaterial({ 
+                color: 0x020202, 
+                roughness: 0.05, // Mirror floor
+                metalness: 0.8 
+            });
+            const floor = new THREE.Mesh(floorGeo, floorMat);
+            floor.rotation.x = -Math.PI / 2;
+            floor.position.y = -4;
+            floor.receiveShadow = true;
+            scene.add(floor);
+
+            // Floating Rings / Art Installation
+            const rings = [];
+            for(let i = 0; i < 3; i++) {
+                const geo = new THREE.TorusGeometry(8 + (i*2), 0.1, 16, 100);
+                const mat = new THREE.MeshStandardMaterial({
+                    color: 0xd4af37,
+                    metalness: 1,
+                    roughness: 0.2,
+                    emissive: 0xd4af37,
+                    emissiveIntensity: 0.2
+                });
+                const ring = new THREE.Mesh(geo, mat);
+                ring.rotation.x = Math.PI / 2;
+                ring.position.y = -2 + (i*2);
+                ring.castShadow = true;
+                scene.add(ring);
+                rings.push({mesh: ring, speed: 0.002 * (i%2===0?1:-1)});
+            }
+
+            // Lighting
+            const ambient = new THREE.AmbientLight(0xffffff, 0.2);
+            scene.add(ambient);
+
+            const spot1 = new THREE.SpotLight(0xffffff, 5);
+            spot1.position.set(0, 20, 0);
+            spot1.angle = Math.PI/4;
+            spot1.penumbra = 0.8;
+            spot1.castShadow = true;
+            scene.add(spot1);
+
+            const spot2 = new THREE.SpotLight(0xd4af37, 2);
+            spot2.position.set(10, 5, 10);
+            spot2.angle = Math.PI/6;
+            scene.add(spot2);
+
+            // Camera Scroll Parallax
+            ScrollTrigger.create({
+                trigger: "body",
+                start: "top top",
+                end: "bottom bottom",
+                onUpdate: (self) => {
+                    gsap.to(camera.position, {
+                        y: 5 + (self.progress * 10),
+                        z: 25 - (self.progress * 10),
+                        overwrite: "auto",
+                        duration: 0.5
+                    });
+                    camera.lookAt(0,0,0);
+                }
+            });
+
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                rings.forEach(r => {
+                    r.mesh.rotation.z += r.speed;
+                });
+
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SA Vehicle | Scissors Associate</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Outfit:wght@200;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: { sa: { black: '#0a0a0a', dark: '#141414', graphite: '#1f1f1f', silver: '#e0e0e0', gold: '#d4af37' } }, fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Outfit', 'sans-serif'] } } } }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <!-- Three.js via CDN directly -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- OrbitControls -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body class="bg-sa-black text-sa-silver font-sans overflow-hidden antialiased opacity-0 transition-opacity duration-1000" id="body">
+    
+    <nav class="fixed top-0 w-full z-50 px-4 md:px-8 py-4 md:py-6 mix-blend-difference flex justify-between items-center transition-all duration-500 pointer-events-auto" id="navbar">
+        <a href="index.html" class="text-2xl md:text-3xl font-display font-bold tracking-widest uppercase cursor-pointer">
+            SA<span class="text-sa-gold">.</span>
+        </a>
+        <a href="collection.html" class="uppercase text-[10px] md:text-xs tracking-widest border border-sa-silver/30 px-4 md:px-6 py-2 hover:bg-sa-silver hover:text-sa-black transition-all">Back</a>
+    </nav>
+
+    <!-- 3D Canvas Container -->
+    <div id="car-canvas" class="absolute inset-0 z-0"></div>
+
+    <!-- UI Overlay -->
+    <div class="absolute inset-0 z-10 pointer-events-none flex flex-col justify-between p-4 md:p-8 pt-24 md:pt-32 pb-6 md:pb-16 w-full overflow-hidden">
+        
+        <!-- Top Stats -->
+        <div class="max-w-7xl mx-auto w-full flex flex-col md:flex-row justify-between items-start pointer-events-auto ui-layer transform -translate-y-10 opacity-0 gap-6 md:gap-0">
+            <div>
+                <h1 class="text-4xl sm:text-5xl md:text-7xl font-display font-light tracking-widest uppercase mb-1 md:mb-2" id="model-name">Phantom</h1>
+                <p class="text-sa-gold text-[10px] md:text-sm tracking-widest font-mono">HYBRID HYPERCAR</p>
+            </div>
+            <div class="flex md:block md:text-right space-x-8 md:space-x-0 space-y-0 md:space-y-4">
+                <div>
+                    <div class="text-2xl md:text-3xl font-display">1.9<span class="text-xs md:text-sm">s</span></div>
+                    <div class="text-[10px] md:text-xs uppercase tracking-widest text-sa-silver/50">0-60 MPH</div>
+                </div>
+                <div>
+                    <div class="text-2xl md:text-3xl font-display">250<span class="text-xs md:text-sm">mph</span></div>
+                    <div class="text-[10px] md:text-xs uppercase tracking-widest text-sa-silver/50">Top Speed</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Controls -->
+        <div class="max-w-7xl mx-auto w-full flex flex-col sm:flex-row justify-between items-center sm:items-end pointer-events-auto ui-layer transform translate-y-10 opacity-0 gap-6 sm:gap-0 mt-auto md:mt-0">
+            <button id="btn-engine" class="group flex items-center space-x-4">
+                <div class="w-12 h-12 md:w-16 md:h-16 rounded-full border border-sa-gold/50 flex items-center justify-center group-hover:bg-sa-gold/10 transition-colors">
+                    <div class="w-8 h-8 md:w-12 md:h-12 rounded-full border border-sa-gold flex items-center justify-center bg-sa-dark shadow-[0_0_15px_rgba(212,175,55,0.3)] group-hover:shadow-[0_0_25px_rgba(212,175,55,0.6)] transition-all">
+                        <div class="w-3 h-3 md:w-4 md:h-4 bg-red-600 rounded-full animate-pulse blur-[1px]" id="engine-status"></div>
+                    </div>
+                </div>
+                <span class="text-[10px] md:text-xs tracking-widest uppercase text-sa-gold">Start Engine</span>
+            </button>
+            
+            <a href="configure.html" class="bg-sa-silver text-sa-black px-6 md:px-8 py-3 md:py-4 uppercase text-xs md:text-sm tracking-widest font-bold hover:bg-sa-gold transition-colors duration-300 w-full sm:w-auto text-center">
+                Configure Yours
+            </a>
+        </div>
+    </div>
+    
+    <!-- Instruction overlay -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 text-xs uppercase tracking-widest text-sa-silver/30 pointer-events-none ui-layer opacity-0">Drag to rotate • Scroll to zoom</div>
+
+    <audio id="sfx-engine" src="assets/engine-ambient.mp3" preload="auto"></audio>
+
+    <script src="transition.js"></script>
+    <script>
+        // UI Animations
+        document.addEventListener("DOMContentLoaded", () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const model = urlParams.get('model');
+            if(model) {
+                document.getElementById('model-name').textContent = model.charAt(0).toUpperCase() + model.slice(1);
+            }
+            gsap.to('.ui-layer', { opacity: 1, y: 0, duration: 1.5, stagger: 0.2, ease: "power3.out", delay: 0.5 });
+            initThreeJS();
+        });
+
+        // Toggle Engine
+        const btnEngine = document.getElementById('btn-engine');
+        const sfx = document.getElementById('sfx-engine');
+        let engineOn = false;
+        
+        btnEngine.addEventListener('click', () => {
+            engineOn = !engineOn;
+            const status = document.getElementById('engine-status');
+            if(engineOn) {
+                status.classList.remove('bg-red-600');
+                status.classList.add('bg-green-500', 'shadow-[0_0_10px_#22c55e]');
+                sfx.play().catch(()=>console.log("Audio play blocked"));
+                gsap.to(camera.position, { z: 20, duration: 2, ease: "power2.inOut" });
+                // Add extreme glow to car material
+                gsap.to(carMaterial, { emissiveIntensity: 0.8, duration: 1 });
+            } else {
+                status.classList.add('bg-red-600');
+                status.classList.remove('bg-green-500', 'shadow-[0_0_10px_#22c55e]');
+                sfx.pause();
+                gsap.to(camera.position, { z: 30, duration: 2, ease: "power2.inOut" });
+                gsap.to(carMaterial, { emissiveIntensity: 0.1, duration: 1 });
+            }
+        });
+
+        // 3D Implementation (Substituting a real car model with a high-end luxury abstract form)
+        let scene, camera, renderer, carMesh, carMaterial;
+
+        function initThreeJS() {
+            const container = document.getElementById('car-canvas');
+            scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x0a0a0a, 0.02);
+
+            camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+            camera.position.set(0, 5, 30);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.0;
+            container.appendChild(renderer.domElement);
+
+            const controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.maxPolarAngle = Math.PI / 2 - 0.05; // Don't go below ground
+            controls.minDistance = 15;
+            controls.maxDistance = 50;
+
+            // Ground reflection
+            const planeGeo = new THREE.PlaneGeometry(200, 200);
+            const planeMat = new THREE.MeshStandardMaterial({ 
+                color: 0x050505, 
+                roughness: 0.1,
+                metalness: 0.8
+            });
+            const plane = new THREE.Mesh(planeGeo, planeMat);
+            plane.rotation.x = -Math.PI / 2;
+            plane.position.y = -5;
+            scene.add(plane);
+
+            // Car Abstraction (Aerodynamic structure)
+            const geometry = new THREE.TorusKnotGeometry(6, 2, 300, 40, 3, 5);
+            carMaterial = new THREE.MeshPhysicalMaterial({
+                color: 0x111111,
+                metalness: 1.0,
+                roughness: 0.2,
+                clearcoat: 1.0,
+                clearcoatRoughness: 0.1,
+                emissive: 0xd4af37,
+                emissiveIntensity: 0.1
+            });
+            carMesh = new THREE.Mesh(geometry, carMaterial);
+            scene.add(carMesh);
+
+            // Studio Lighting
+            const ambient = new THREE.AmbientLight(0xffffff, 0.2);
+            scene.add(ambient);
+
+            const spotLight = new THREE.SpotLight(0xffffff, 5);
+            spotLight.position.set(0, 30, 0);
+            spotLight.angle = Math.PI/4;
+            spotLight.penumbra = 0.5;
+            scene.add(spotLight);
+
+            const rimLight1 = new THREE.PointLight(0xd4af37, 3, 50);
+            rimLight1.position.set(-15, 5, -15);
+            scene.add(rimLight1);
+
+            const rimLight2 = new THREE.PointLight(0xe0e0e0, 2, 50);
+            rimLight2.position.set(15, -5, 15);
+            scene.add(rimLight2);
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+
+            gsap.ticker.add(() => {
+                if(!engineOn) {
+                    carMesh.rotation.y += 0.002;
+                } else {
+                    carMesh.rotation.y += 0.01;
+                    carMesh.position.y = Math.sin(Date.now() * 0.01) * 0.05; // Idle vibration
+                }
+                controls.update();
+                renderer.render(scene, camera);
+            });
+        }
+    </script>
+</body>
+</html>
